@@ -1,0 +1,352 @@
+/* GitHub动态壁纸 - 重新设计版 */
+
+@font-face {
+    font-family: JetBrains Mono;
+    src: url(data:font/woff2;base64,d09GMgABAAAAAA3wAAoAAAAAHAAAA2kAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAg0CAoGVgAgAhEICoxyCoMOC14AAE8BNgIkA0oEIAWDBAcgDIJKG7sdVKFjB9uxk7BlhDx0+P8fODk5VXF9VXl5/b8ABFA=) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --custom-color: rgb(255, 255, 255);
+    
+    /* 白天主题颜色 */
+    --day-primary: #667eea;
+    --day-secondary: #764ba2;
+    --day-bg: linear-gradient(135deg, var(--day-primary) 0%, var(--day-secondary) 100%);
+    --day-text: #ffffff;
+    --day-text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --day-icon-color: #ffffff;
+    --day-accent: rgba(255, 255, 255, 0.2);
+    --day-glow: rgba(255, 255, 255, 0.4);
+    
+    /* 夜晚主题颜色 */
+    --night-primary: #1a1a2e;
+    --night-secondary: #16213e;
+    --night-bg: linear-gradient(135deg, var(--night-primary) 0%, var(--night-secondary) 100%);
+    --night-text: #e0e6ed;
+    --night-text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    --night-icon-color: #9aa5b1;
+    --night-accent: rgba(255, 255, 255, 0.1);
+    --night-glow: rgba(106, 176, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    overflow: hidden;
+    position: relative;
+}
+
+html, body, #app {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* 背景图案 */
+.background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.05;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px;
+    animation: patternMove 60s linear infinite;
+}
+
+@keyframes patternMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* 装饰点 */
+.decoration-dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    animation: float 6s ease-in-out infinite;
+}
+
+.dot-1 { top: 20%; left: 10%; animation-delay: 0s; }
+.dot-2 { top: 30%; right: 15%; animation-delay: 1s; }
+.dot-3 { bottom: 25%; left: 20%; animation-delay: 2s; }
+.dot-4 { bottom: 15%; right: 25%; animation-delay: 3s; }
+.dot-5 { top: 50%; left: 5%; animation-delay: 4s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.3; }
+    50% { transform: translateY(-20px) scale(1.2); opacity: 0.6; }
+}
+
+/* 主容器 */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    z-index: 2;
+}
+
+/* GitHub容器 */
+.github-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: slideUp 1.2s ease-out;
+}
+
+.github-icon {
+    width: 12rem;
+    height: 12rem;
+    transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+}
+
+.github-icon:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+.github-text {
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    text-align: center;
+}
+
+/* 时间部分 */
+.time-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: slideUp 1.2s ease-out 0.3s both;
+}
+
+.time-container {
+    font-size: 5rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    text-align: center;
+    position: relative;
+}
+
+.time-container::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: currentColor;
+    transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.time-container:hover::after {
+    width: 100%;
+}
+
+.date-container {
+    font-size: 1.8rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+    text-align: center;
+    opacity: 0.9;
+}
+
+/* 底部信息 */
+.footer-info {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 3;
+    animation: fadeIn 1.5s ease-out 0.6s both;
+}
+
+.theme-indicator {
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.theme-indicator:hover {
+    opacity: 1;
+}
+
+/* 白天主题 */
+.theme-day {
+    background: var(--day-bg);
+    color: var(--day-text);
+}
+
+.theme-day .github-icon {
+    fill: var(--day-icon-color);
+}
+
+.theme-day .github-text,
+.theme-day .time-container,
+.theme-day .date-container {
+    text-shadow: var(--day-text-shadow);
+}
+
+.theme-day .github-icon {
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+}
+
+/* 夜晚主题 */
+.theme-night {
+    background: var(--night-bg);
+    color: var(--night-text);
+}
+
+.theme-night .github-icon {
+    fill: var(--night-icon-color);
+}
+
+.theme-night .github-text,
+.theme-night .time-container,
+.theme-night .date-container {
+    text-shadow: var(--night-text-shadow);
+}
+
+.theme-night .github-icon {
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+.theme-night .dot {
+    background: var(--night-glow);
+}
+
+/* 自定义颜色 */
+.custom-color .github-icon {
+    fill: var(--custom-color);
+}
+
+.custom-color .github-text,
+.custom-color .time-container,
+.custom-color .date-container {
+    color: var(--custom-color);
+}
+
+/* 动画 */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 响应式调整 */
+@media (max-height: 800px) {
+    .main-container {
+        gap: 2rem;
+    }
+    
+    .github-icon {
+        width: 8rem;
+        height: 8rem;
+    }
+    
+    .time-container {
+        font-size: 4rem;
+    }
+    
+    .github-text {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .time-container {
+        font-size: 4rem;
+    }
+    
+    .date-container {
+        font-size: 1.5rem;
+    }
+    
+    .github-text {
+        font-size: 2rem;
+    }
+}
+
+/* 特殊效果 */
+.theme-day .github-container:hover .github-icon {
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3)) 
+            drop-shadow(0 0 20px var(--day-glow));
+}
+
+.theme-night .github-container:hover .github-icon {
+    filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5)) 
+            drop-shadow(0 0 20px var(--night-glow));
+}
+
+/* 时钟数字跳动效果 */
+.time-container {
+    font-variant-numeric: tabular-nums;
+}
+
+.time-container.updating {
+    animation: pulse 0.2s ease-in-out;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
