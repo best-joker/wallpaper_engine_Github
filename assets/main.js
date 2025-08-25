@@ -4,24 +4,35 @@
 let currentTheme = 'auto';
 let currentTime = new Date();
 
-// Wallpaper Engine 属性监听器
+// Wallpaper Engine 属性监听器 - 增强兼容性
 window.wallpaperPropertyListener = {
     applyUserProperties: function(properties) {
-        console.log('Wallpaper properties updated:', properties);
-        
-        // 监听主题切换
-        if (properties.forcetheme) {
-            currentTheme = properties.forcetheme.value;
-            updateTheme();
-        }
-        
-        // 监听自定义颜色
-        if (properties.schemecolor) {
-            const color = properties.schemecolor.value;
-            updateColorScheme(color);
+        try {
+            console.log('Wallpaper properties updated:', properties);
+            
+            // 监听主题切换
+            if (properties && properties.forcetheme && properties.forcetheme.value) {
+                currentTheme = properties.forcetheme.value;
+                updateTheme();
+            }
+            
+            // 监听自定义颜色
+            if (properties && properties.schemecolor && properties.schemecolor.value) {
+                const color = properties.schemecolor.value;
+                updateColorScheme(color);
+            }
+        } catch (error) {
+            console.error('Error applying wallpaper properties:', error);
         }
     }
 };
+
+// 检查是否在Wallpaper Engine环境中
+function isWallpaperEngine() {
+    return typeof window !== 'undefined' && 
+           (window.wallpaperPropertyListener !== undefined || 
+            navigator.userAgent.indexOf('Wallpaper') !== -1);
+}
 
 // 主题更新函数
 function updateTheme() {
@@ -116,9 +127,17 @@ function createDecorations() {
 
 // 页面初始化
 function initializePage() {
-    const app = document.getElementById('app');
-    
-    app.innerHTML = `
+    try {
+        console.log('Initializing GitHub Wallpaper...');
+        console.log('Environment:', isWallpaperEngine() ? 'Wallpaper Engine' : 'Browser');
+        
+        const app = document.getElementById('app');
+        if (!app) {
+            console.error('App container not found!');
+            return;
+        }
+        
+        app.innerHTML = `
         <div class="content">
             <div class="background-pattern"></div>
             ${createDecorations()}
@@ -137,17 +156,34 @@ function initializePage() {
             </div>
         </div>
     `;
-    
-    // 初始化主题和时间
-    updateTheme();
-    updateTime();
-    updateThemeIndicator();
-    
-    // 设置定时器
-    setInterval(updateTime, 1000);
-    setInterval(updateThemeIndicator, 5000);
-    
-    console.log('GitHub Wallpaper - Redesigned Version initialized successfully');
+        
+        // 初始化主题和时间
+        updateTheme();
+        updateTime();
+        updateThemeIndicator();
+        
+        // 设置定时器
+        setInterval(updateTime, 1000);
+        setInterval(updateThemeIndicator, 5000);
+        
+        console.log('GitHub Wallpaper - Redesigned Version initialized successfully');
+        
+    } catch (error) {
+        console.error('Failed to initialize wallpaper:', error);
+        // 显示错误信息到页面
+        const app = document.getElementById('app');
+        if (app) {
+            app.innerHTML = `
+                <div style="display: flex; justify-content: center; align-items: center; height: 100vh; color: white; font-family: Arial, sans-serif; text-align: center;">
+                    <div>
+                        <h2>壁纸加载错误</h2>
+                        <p>请检查控制台获取详细错误信息</p>
+                        <p style="font-size: 0.8em; opacity: 0.7;">Error: ${error.message}</p>
+                    </div>
+                </div>
+            `;
+        }
+    }
 }
 
 // 更新主题指示器
