@@ -1,11 +1,6 @@
 /* GitHub动态壁纸 - 重新设计版 */
 
-@font-face {
-    font-family: JetBrains Mono;
-    src: url(data:font/woff2;base64,d09GMgABAAAAAA3wAAoAAAAAHAAAA2kAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABmAAg0CAoGVgAgAhEICoxyCoMOC14AAE8BNgIkA0oEIAWDBAcgDIJKG7sdVKFjB9uxk7BlhDx0+P8fODk5VXF9VXl5/b8ABFA=) format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
+/* 使用系统等宽字体，确保在Wallpaper Engine中正常显示 */
 
 :root {
     --custom-color: rgb(255, 255, 255);
@@ -39,7 +34,7 @@
 
 body {
     margin: 0;
-    font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
     overflow: hidden;
     position: relative;

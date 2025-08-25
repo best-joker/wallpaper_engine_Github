@@ -1,6 +1,6 @@
 {
 	"contentrating" : "Everyone",
-	"description" : "重新设计的GitHub动态壁纸，支持完整的主题切换功能 - 自动/白天/夜晚模式，带有平滑过渡动画效果",
+	"description" : "重新设计的GitHub动态壁纸，支持完整的主题切换功能 - 自动/白天/夜晚模式，带有平滑过渡动画效果。兼容所有Wallpaper Engine版本。",
 	"file" : "index.html",
 	"general" : 
 	{
